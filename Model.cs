@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Xml.Linq;
 
 namespace Travelling_salesman
 {
+    public struct minPath
+    {
+        public int cost;
+        public List<int> nums;
+    }
     public class Model : IModel
     {
         private IGraph _graph;
@@ -30,19 +36,71 @@ namespace Travelling_salesman
         {
             _graph.DeletePath(towns);
         }
-        public void Calculate()
+
+        private int minPath = 10000;
+        private int minCounter;
+        //Список всех перестановок городов
+        static List<List<int>> results = new List<List<int>>();
+        //Длина пути 
+        private int path;
+        //Вспомогательные переменные
+        private int p1, p2;
+
+        public minPath Calculate()
         {
-            List<List<int>> connectivity_matrix = _graph.GetAllNodes();
-            for (int i = 0; i< connectivity_matrix.Count; i++)
+            List<List<int>> towns = _graph.GetAllNodes();
+
+            //Список всех городов
+            List<int> cities = new List<int> ();
+            for(int i = 0; i < towns.Count; i++)
             {
-                int result = Iteration(connectivity_matrix, i, i);
+                cities.Add(i+1);
+            }
+            Permute(cities);
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                path = 0;
+                for (int j = 1; j < cities.Count; j++)
+                {
+                    p1 = results[i][j - 1] - 1;
+                    p2 = results[i][j] - 1;
+                    path += towns[p1][p2];
+                }
+
+                if (path < minPath)
+                {
+                    minCounter = i;
+                    minPath = path;
+                }
+            }
+
+            //Вывод порядка прохождения городов и длины этого пути
+            minPath p = new minPath(); 
+            p.nums = results[minCounter];
+            p.cost = minPath;
+            return p;
+        }
+
+        //Функция по перебору всех перестановок
+        static void Permute(List<int> arr, List<int> memo = null)
+        {
+            memo = memo ?? new List<int>();
+
+            for (int i = 0; i < arr.Count; i++)
+            {
+                int cur = arr[i];
+                arr.RemoveAt(i);
+                if (arr.Count == 0)
+                {
+                    results.Add(new List<int>(memo) { cur });
+                }
+
+                Permute(new List<int>(arr), new List<int>(memo) { cur });
+                arr.Insert(i, cur);
             }
         }
 
-        private int Iteration(List<List<int>> nodes, int ignore, int curr_town)
-        {
-            return 1;
-        }
         public void ClearModel()
         {
             _graph.Clear();

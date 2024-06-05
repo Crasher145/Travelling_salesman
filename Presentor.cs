@@ -52,7 +52,8 @@ namespace Travelling_salesman
         }
         public void CalculatePathEventHandler(object sender, EventArgs e)
         {
-            model.Calculate();
+            minPath p = model.Calculate();
+            view.OutputHint(p.cost.ToString());
         }
         public void AddPathEventHandler(object sender, ClickArgs e)
         {

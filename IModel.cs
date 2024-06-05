@@ -12,7 +12,7 @@ namespace Travelling_salesman
         void AddPath(int[] towns, int cost);
         void DeleteTown(int id);
         void DeletePath(int[] towns);
-        void Calculate();
+        minPath Calculate();
         void ClearModel();
         IGraph GetGraph();
     }
