@@ -48,6 +48,7 @@ namespace Travelling_salesman
 
         public minPath Calculate()
         {
+            results.Clear();
             List<List<int>> towns = _graph.GetAllNodes();
 
             //Список всех городов
@@ -60,15 +61,21 @@ namespace Travelling_salesman
 
             for (int i = 0; i < results.Count; i++)
             {
+                bool isValid = true;
                 path = 0;
-                for (int j = 1; j < cities.Count; j++)
+                for (int j = 1; j < cities.Count+1; j++)
                 {
                     p1 = results[i][j - 1] - 1;
                     p2 = results[i][j] - 1;
+                    if (towns[p1][p2] == -1)
+                    {
+                        isValid = false;
+                        break;
+                    }
                     path += towns[p1][p2];
                 }
 
-                if (path < minPath)
+                if (path < minPath && isValid)
                 {
                     minCounter = i;
                     minPath = path;
@@ -93,7 +100,7 @@ namespace Travelling_salesman
                 arr.RemoveAt(i);
                 if (arr.Count == 0)
                 {
-                    results.Add(new List<int>(memo) { cur });
+                    results.Add(new List<int>(memo) { cur, memo[0] });
                 }
 
                 Permute(new List<int>(arr), new List<int>(memo) { cur });

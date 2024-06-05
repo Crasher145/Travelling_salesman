@@ -107,11 +107,25 @@ namespace Travelling_salesman
         }
         public void DrawResult(int[] nums, int cost)
         {
-
+            for(int i = 0; i <= nums.Count()-2; i++)
+            {
+                Line newPath = new Line();
+                newPath.X1 = AllTowns[nums[i]-1].X + _size / 2;
+                newPath.Y1 = AllTowns[nums[i]-1].Y + _size / 2;
+                newPath.X2 = AllTowns[nums[i+1]-1].X + _size / 2;
+                newPath.Y2 = AllTowns[nums[i + 1] - 1].Y + _size / 2;
+                newPath.Stroke = Brushes.Red;
+                newPath.StrokeThickness = 2;
+                towns_canvas.Children.Add(newPath);
+            }
+            string msg = string.Join(", ", nums) + "\n" + cost.ToString();
+            OutputHint(msg);
         }
         public void ClearView()
         {
             towns_canvas.Children.Clear();
+            AllTowns.Clear();
+            
         }
         public void AddPathClick(object sender, RoutedEventArgs e)
         {
