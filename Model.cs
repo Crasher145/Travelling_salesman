@@ -52,6 +52,7 @@ namespace Travelling_salesman
 
         public minPath Calculate()
         {
+            minPath = 10000;
             results.Clear();
             List<List<int>> towns = _graph.GetAllNodes();
 
