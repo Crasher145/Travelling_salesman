@@ -21,9 +21,7 @@ namespace Travelling_salesman
     /// </summary>
     public partial class MainWindow : Window, IVew
     {
-        private List<Coordinates> AllTowns;
         public event EventHandler<ClickArgs> AddTown;
-        public event EventHandler<ClickArgs> DeleteTown;
         public event EventHandler<ClickArgs> AddPath;
         public event EventHandler<ClickArgs> Clear;
         public event EventHandler<ClickArgs> Calculate;
@@ -32,12 +30,14 @@ namespace Travelling_salesman
         private ImageBrush _brush;
         private double _size = 20;
 
-        private int AddPathMode = -1;
+        private List<Coordinates> AllTowns;
+        private List<Line> _selectedPath;
 
         public MainWindow()
         {
             InitializeComponent();
             AllTowns = new List<Coordinates>();
+            _selectedPath = new List<Line>();
 
             _image = new BitmapImage(new Uri("..\\img.png", UriKind.Relative));
             _brush = new ImageBrush(_image);
@@ -45,21 +45,14 @@ namespace Travelling_salesman
 
         private void canvas_LeftMouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            if (_selectedPath.Count != 0)
+                ClearSelectedPath();
             var c = CheckTown(e);
             if(c == -1)
             {
                 AddTown?.Invoke(this, new ClickArgs(e.GetPosition(towns_canvas).X, e.GetPosition(towns_canvas).Y));
             }
 
-        }
-        private void canvas_RightMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var c = CheckTown(e);
-            if (c != -1)
-            {
-                DeleteTown?.Invoke(this, new ClickArgs(c));
-            }
         }
 
         public void DrawTown(ClickArgs e)
@@ -117,6 +110,7 @@ namespace Travelling_salesman
                 newPath.Stroke = Brushes.Red;
                 newPath.StrokeThickness = 2;
                 towns_canvas.Children.Add(newPath);
+                _selectedPath.Add(newPath);
             }
             string msg = string.Join(", ", nums) + "\n" + cost.ToString();
             OutputHint(msg);
@@ -129,13 +123,21 @@ namespace Travelling_salesman
         }
         public void AddPathClick(object sender, RoutedEventArgs e)
         {
-            int first = int.Parse(First_city_text.Text);
-            int second = int.Parse(Second_city_text.Text);
-            int cost = int.Parse(Cost_text.Text);
-            AddPath?.Invoke(this, new ClickArgs(first, second, cost));
-            First_city_text.Clear();
-            Second_city_text.Clear();
-            Cost_text.Clear();
+            if(_selectedPath.Count!=0)
+                ClearSelectedPath();
+            try
+            {
+                int first = int.Parse(First_city_text.Text);
+                int second = int.Parse(Second_city_text.Text);
+                int cost = int.Parse(Cost_text.Text);
+                AddPath?.Invoke(this, new ClickArgs(first, second, cost));
+                First_city_text.Clear();
+                Second_city_text.Clear();
+                Cost_text.Clear();
+            } catch(Exception ex)
+            {
+                OutputHint(ex.ToString());
+            }
         }
         public void ClearClick(object sender, RoutedEventArgs e)
         {
@@ -143,12 +145,23 @@ namespace Travelling_salesman
         }
         public void CalculatePathClick(object sender, RoutedEventArgs e)
         {
+            if (_selectedPath.Count != 0)
+                ClearSelectedPath();
             Calculate?.Invoke(this, null);
         }
 
         public void OutputHint(string hint)
         {
             Output_label.Content = hint;
+        }
+
+        private void ClearSelectedPath()
+        {
+            foreach(Line line in _selectedPath)
+            {
+                towns_canvas.Children.Remove(line);
+            }
+            _selectedPath.Clear();
         }
     }
 }

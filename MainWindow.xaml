@@ -8,7 +8,7 @@
         Title="MainWindow" Height="450" Width="800"
         ResizeMode="NoResize">
     <Grid>
-        <Canvas x:Name="towns_canvas" Margin="0,0,180,0" Background="White" MouseLeftButtonDown="canvas_LeftMouseDown" MouseRightButtonDown="canvas_RightMouseDown"></Canvas>
+        <Canvas x:Name="towns_canvas" Margin="0,0,180,0" Background="White" MouseLeftButtonDown="canvas_LeftMouseDown"></Canvas>
         <Button x:Name="add_path_button" Content="Добавить путь" HorizontalAlignment="Left" Margin="625,100,0,0" VerticalAlignment="Top" Width="165" Height="25" MinWidth="165" MinHeight="25" MaxWidth="165" MaxHeight="25" Click="AddPathClick"/>
         <Button x:Name="Calculate_path_button" Content="Рассчитать путь" HorizontalAlignment="Left" Margin="625,130,0,0" VerticalAlignment="Top" Width="165" Height="25" MinWidth="165" MinHeight="25" MaxWidth="165" MaxHeight="25" Click="CalculatePathClick"/>
         <Button x:Name="Clear_button" Content="Очистить" HorizontalAlignment="Left" Margin="626,160,0,0" VerticalAlignment="Top" Width="165" Height="25" MinWidth="165" MinHeight="25" MaxWidth="165" MaxHeight="25" Click="ClearClick"/>

@@ -57,10 +57,12 @@ namespace Travelling_salesman
         }
         public void AddPathEventHandler(object sender, ClickArgs e)
         {
-            view.DrawPath(new int[2] { (int)e.X-1, (int)e.Y-1}, e.number);
-            model.AddPath(new int[2] { (int)e.X - 1, (int)e.Y - 1 }, e.number);
-
-            UpdateHint();
+            if (model.AddPath(new int[2] { (int)e.X - 1, (int)e.Y - 1 }, e.number) == 0)
+            {
+                view.DrawPath(new int[2] { (int)e.X - 1, (int)e.Y - 1 }, e.number);
+                UpdateHint();
+            }
+            else view.OutputHint("Не удалось добавить путь");
         }
     }
 }

@@ -24,9 +24,13 @@ namespace Travelling_salesman
         {
             _graph.AddNode();
         }
-        public void AddPath(int[] towns, int cost)
+        public int AddPath(int[] towns, int cost)
         {
-            _graph.AddPath(towns, cost);
+            if (_graph.AddPath(towns, cost) == 0)
+            {
+                return 0;
+            }
+            else return -1;
         }
         public void DeleteTown(int id)
         {
@@ -63,7 +67,7 @@ namespace Travelling_salesman
             {
                 bool isValid = true;
                 path = 0;
-                for (int j = 1; j < cities.Count+1; j++)
+                for (int j = 1; j < results[i].Count; j++)
                 {
                     p1 = results[i][j - 1] - 1;
                     p2 = results[i][j] - 1;

@@ -10,7 +10,8 @@ namespace Travelling_salesman
     {
         List<List<int>> _nodes;
 
-        public Graph() {
+        public Graph()
+        {
             _nodes = new List<List<int>>();
         }
         public void AddNode()
@@ -36,10 +37,18 @@ namespace Travelling_salesman
         {
             return _nodes;
         }
-        public void AddPath(int[] nums, int cost)
+        public int AddPath(int[] nums, int cost)
         {
-            _nodes[nums[0]][nums[1]] = cost;
-            _nodes[nums[1]][nums[0]] = cost;
+            if (nums[0] < _nodes.Count && nums[1] < _nodes.Count)
+            {
+                if (_nodes[nums[0]][nums[1]] == -1 && _nodes[nums[1]][nums[0]] == -1)
+                {
+                    _nodes[nums[0]][nums[1]] = cost;
+                    _nodes[nums[1]][nums[0]] = cost;
+                    return 0;
+                }
+            }
+            return -1;
         }
         public void DeletePath(int[] nums)
         {

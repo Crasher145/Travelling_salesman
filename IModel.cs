@@ -9,7 +9,7 @@ namespace Travelling_salesman
     public interface IModel
     {
         void AddTown();
-        void AddPath(int[] towns, int cost);
+        int AddPath(int[] towns, int cost);
         void DeleteTown(int id);
         void DeletePath(int[] towns);
         minPath Calculate();

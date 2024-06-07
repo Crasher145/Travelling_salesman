@@ -11,7 +11,7 @@ namespace Travelling_salesman
         void AddNode();
         void DeleteNode(int id);
         List<List<int>> GetAllNodes();
-        void AddPath(int[] nums, int cost);
+        int AddPath(int[] nums, int cost);
         void DeletePath(int[] nums);
         void Clear();
     }
